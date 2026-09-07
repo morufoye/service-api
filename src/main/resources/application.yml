@@ -46,6 +46,12 @@ account:
   service:
     url: ${ACCOUNT_SERVICE_URL:http://localhost:9082/}
 
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: banking-swagger
+      use-pkce-with-authorization-code-grant: true
+
 logging:
   level:
     org:

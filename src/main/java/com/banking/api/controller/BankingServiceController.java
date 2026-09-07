@@ -7,6 +7,7 @@ import com.banking.api.dto.DebitCreditRequest;
 import com.banking.api.service.AccountService;
 import com.banking.api.service.CustomerService;
 import com.banking.api.service.RtellerService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import javax.security.auth.login.AccountException;
 @RestController
 @RequestMapping("/api/service")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "keycloak")
 @Slf4j
 @PreAuthorize("hasAuthority('ROLE_CLIENT')")
 public class BankingServiceController {
