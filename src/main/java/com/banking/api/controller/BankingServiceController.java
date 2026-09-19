@@ -2,8 +2,16 @@ package com.banking.api.controller;
 
 import com.banking.api.dto.AccountBalanceRequest;
 import com.banking.api.dto.AccountCreationRequest;
+import com.banking.api.dto.AccountDetailsRequest;
+import com.banking.api.dto.AccountNumberRequest;
+import com.banking.api.dto.AccountResponse;
 import com.banking.api.dto.CustomerCreateRequest;
+import com.banking.api.dto.CreateAccountResponse;
 import com.banking.api.dto.DebitCreditRequest;
+import com.banking.api.dto.FullAccountBalanceResponse;
+import com.banking.api.dto.StatementRequest;
+import com.banking.api.dto.StatementResponse;
+import com.banking.api.dto.SummaryBalanceResponse;
 import com.banking.api.service.AccountService;
 import com.banking.api.service.CustomerService;
 import com.banking.api.service.RtellerService;
@@ -16,9 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.security.auth.login.AccountException;
-
 
 @RestController
 @RequestMapping("/api/service")
@@ -54,21 +59,51 @@ public class BankingServiceController {
 
     @PreAuthorize("hasAuthority('ROLE_CREATE_ACCOUNT')")
     @PostMapping("/create-account")
-    public ResponseEntity<String> createAccount(
+    public ResponseEntity<CreateAccountResponse> createAccount(
             @RequestBody AccountCreationRequest request) {
 
-        String response = accountService.createAccount(request);
+        CreateAccountResponse response = accountService.createAccount(request);
 
         return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasAuthority('ROLE_CHECK_BALANCE')")
     @PostMapping("/check-balance")
-    public ResponseEntity<String> checkBalance(
+    public ResponseEntity<AccountResponse> checkBalance(
             @RequestBody AccountBalanceRequest request) {
 
-        String response = accountService.checkBalance(request);
+        AccountResponse response = accountService.checkBalance(request);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/summary-balance")
+    public ResponseEntity<SummaryBalanceResponse> summaryBalance(
+            @RequestBody AccountNumberRequest request) {
+        return ResponseEntity.ok(accountService.summaryBalance(request));
+    }
+
+    @PostMapping("/full-account-balance")
+    public ResponseEntity<FullAccountBalanceResponse> fullAccountBalance(
+            @RequestBody AccountNumberRequest request) {
+        return ResponseEntity.ok(accountService.fullAccountBalance(request));
+    }
+
+    @PostMapping("/checkout")
+    public ResponseEntity<AccountResponse> checkout(
+            @RequestBody AccountNumberRequest request) {
+        return ResponseEntity.ok(accountService.checkout(request));
+    }
+
+    @PostMapping("/account-details")
+    public ResponseEntity<AccountResponse> accountDetails(
+            @RequestBody AccountDetailsRequest request) {
+        return ResponseEntity.ok(accountService.accountDetails(request));
+    }
+
+    @PostMapping("/statement")
+    public ResponseEntity<StatementResponse> statement(
+            @RequestBody StatementRequest request) {
+        return ResponseEntity.ok(accountService.statement(request));
     }
 }

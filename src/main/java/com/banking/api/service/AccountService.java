@@ -2,12 +2,18 @@ package com.banking.api.service;
 
 import com.banking.api.dto.AccountBalanceRequest;
 import com.banking.api.dto.AccountCreationRequest;
+import com.banking.api.dto.AccountDetailsRequest;
+import com.banking.api.dto.AccountNumberRequest;
+import com.banking.api.dto.AccountResponse;
+import com.banking.api.dto.CreateAccountResponse;
+import com.banking.api.dto.FullAccountBalanceResponse;
+import com.banking.api.dto.StatementRequest;
+import com.banking.api.dto.StatementResponse;
+import com.banking.api.dto.SummaryBalanceResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
-import reactor.core.publisher.Mono;
 
 @Service
 @Slf4j
@@ -19,52 +25,49 @@ public class AccountService {
         this.webClient = webClient;
     }
 
-    public String createAccount(AccountCreationRequest request) {
+    public CreateAccountResponse createAccount(AccountCreationRequest request) {
         log.info("Creating account for customer number {}", request.getCUSTNO());
-        return post("api/v1/createAcc", request, "creating account");
+        return post("api/v1/createAcc", request, CreateAccountResponse.class, "creating account");
     }
 
-    public String checkBalance(AccountBalanceRequest request) {
+    public AccountResponse checkBalance(AccountBalanceRequest request) {
         log.info("Checking balance for custacno {}", request.getCustacno());
-        return post("api/v1/bal", request, "checking account balance");
+        return post("api/v1/bal", request, AccountResponse.class, "checking account balance");
     }
 
-    public String summaryBalance(AccountBalanceRequest request) {
+    public SummaryBalanceResponse summaryBalance(AccountNumberRequest request) {
         log.info("Getting summary balance for custacno {}", request.getCustacno());
-        return post("api/v1/Summarybal", request, "getting summary balance");
+        return post("api/v1/Summarybal", request, SummaryBalanceResponse.class, "getting summary balance");
     }
 
-    public String fullAccountBalance(AccountBalanceRequest request) {
+    public FullAccountBalanceResponse fullAccountBalance(AccountNumberRequest request) {
         log.info("Getting full account balance for custacno {}", request.getCustacno());
-        return post("api/v1/fullAccbal", request, "getting full account balance");
+        return post("api/v1/fullAccbal", request, FullAccountBalanceResponse.class, "getting full account balance");
     }
 
-    public String checkout(AccountBalanceRequest request) {
+    public AccountResponse checkout(AccountNumberRequest request) {
         log.info("Checking out account for custacno {}", request.getCustacno());
-        return post("api/v1/checkout", request, "checking out account");
+        return post("api/v1/checkout", request, AccountResponse.class, "checking out account");
     }
 
-    public String accountDetails(AccountBalanceRequest request) {
+    public AccountResponse accountDetails(AccountDetailsRequest request) {
         log.info("Getting account details for custacno {}", request.getCustacno());
-        return post("api/v1/AccDetails", request, "getting account details");
+        return post("api/v1/AccDetails", request, AccountResponse.class, "getting account details");
     }
 
-    public String statement(AccountBalanceRequest request) {
-        log.info("Getting statement for custacno {}", request.getCustacno());
-        return post("api/v1/Statement", request, "getting account statement");
+    public StatementResponse statement(StatementRequest request) {
+        log.info("Getting statement for customer number {}", request.getCusno());
+        return post("api/v1/Statement", request, StatementResponse.class, "getting account statement");
     }
 
-    private String post(String uri, Object request, String operation) {
+    private <T> T post(String uri, Object request, Class<T> responseType, String operation) {
         return webClient
                 .post()
                 .uri(uri)
                 .bodyValue(request)
                 .retrieve()
-                .bodyToMono(String.class)
-                .onErrorResume(WebClientResponseException.class, ex -> {
-                    log.error("{} failed: {}", operation, ex.getMessage());
-                    return Mono.just("{}");
-                })
+                .bodyToMono(responseType)
+                .doOnError(ex -> log.error("{} failed: {}", operation, ex.getMessage()))
                 .block();
     }
 }

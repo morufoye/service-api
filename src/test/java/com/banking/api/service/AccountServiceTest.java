@@ -1,7 +1,10 @@
 package com.banking.api.service;
 
 import com.banking.api.dto.AccountBalanceRequest;
+import com.banking.api.dto.AccountDetailsRequest;
+import com.banking.api.dto.AccountNumberRequest;
 import com.banking.api.dto.AccountCreationRequest;
+import com.banking.api.dto.StatementRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.ClientResponse;
@@ -23,22 +26,26 @@ class AccountServiceTest {
                 .exchangeFunction(request -> {
                     paths.add(request.url().getPath());
                     return Mono.just(ClientResponse.create(HttpStatus.OK)
-                            .header("Content-Type", "text/plain")
-                            .body("ok")
+                            .header("Content-Type", "application/json")
+                            .body("{\"fcubsheader\":{\"msgstat\":\"SUCCESS\"}}")
                             .build());
                 })
                 .build();
         AccountService accountService = new AccountService(webClient);
         AccountBalanceRequest balanceRequest = new AccountBalanceRequest("001", "123456");
+        AccountNumberRequest accountNumberRequest = new AccountNumberRequest("123456");
 
-        assertEquals("ok", accountService.summaryBalance(balanceRequest));
-        assertEquals("ok", accountService.fullAccountBalance(balanceRequest));
-        assertEquals("ok", accountService.checkout(balanceRequest));
-        assertEquals("ok", accountService.accountDetails(balanceRequest));
-        assertEquals("ok", accountService.statement(balanceRequest));
-        assertEquals("ok", accountService.checkBalance(balanceRequest));
-        assertEquals("ok", accountService.createAccount(
-                new AccountCreationRequest("001", "123456", "987654", "NGN", "SAV")));
+        assertEquals("SUCCESS", accountService.summaryBalance(accountNumberRequest).getFcubsheader().getMsgstat());
+        assertEquals("SUCCESS", accountService.fullAccountBalance(accountNumberRequest).getFcubsheader().getMsgstat());
+        assertEquals("SUCCESS", accountService.checkout(accountNumberRequest).getFcubsheader().getMsgstat());
+        assertEquals("SUCCESS", accountService.accountDetails(
+                new AccountDetailsRequest("001", "123456")).getFcubsheader().getMsgstat());
+        assertEquals("SUCCESS", accountService.statement(
+                new StatementRequest("987654", "statement-1")).getFcubsheader().getMsgstat());
+        assertEquals("SUCCESS", accountService.checkBalance(balanceRequest).getFcubsheader().getMsgstat());
+        assertEquals("SUCCESS", accountService.createAccount(
+                new AccountCreationRequest("001", "123456", "987654", "NGN", "SAV"))
+                .getFcubsheader().getMsgstat());
 
         assertEquals(List.of(
                 "/api/v1/Summarybal",
