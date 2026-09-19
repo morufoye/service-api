@@ -1,6 +1,7 @@
 package com.banking.api.dto;
 
 import lombok.Data;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.List;
 
@@ -16,4 +17,5 @@ public class FcubsBody {
     private MultiJrnlBookFull detbsJrnlTxnMasterFull;
     private CustomerFull customerFull;
     private AccountStatusMaster accStatMasterFull;
+    private JsonNode transactionDetails;
 }

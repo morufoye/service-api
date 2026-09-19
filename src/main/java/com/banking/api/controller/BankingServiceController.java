@@ -31,6 +31,11 @@ import com.banking.api.dto.StatChangeRequest;
 import com.banking.api.dto.StatusChangeResponse;
 import com.banking.api.dto.SummaryBalanceResponse;
 import com.banking.api.dto.TransactionRequest;
+import com.banking.api.dto.AuthorizeTransactionRequest;
+import com.banking.api.dto.ProductRequest;
+import com.banking.api.dto.ReverseTransactionRequest;
+import com.banking.api.dto.RtellerResponse;
+import com.banking.api.dto.TransactionQueryRequest;
 import com.banking.api.service.AccountService;
 import com.banking.api.service.AccountStatsService;
 import com.banking.api.service.AccountFinancialService;
@@ -112,12 +117,36 @@ public class BankingServiceController {
 
     @PreAuthorize("hasAuthority('ROLE_PASS_ENTRY')")
     @PostMapping("/pass-entry")
-    public ResponseEntity<String> passEntry(
+    public ResponseEntity<RtellerResponse> passEntry(
             @RequestBody DebitCreditRequest request) {
 
-        String response = rtellerService.passAccountEntry(request);
+        RtellerResponse response = rtellerService.passAccountEntry(request);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/reverse-transaction")
+    public ResponseEntity<RtellerResponse> reverseTransaction(
+            @RequestBody ReverseTransactionRequest request) {
+        return ResponseEntity.ok(rtellerService.reverseTransaction(request));
+    }
+
+    @PostMapping("/query-transaction")
+    public ResponseEntity<RtellerResponse> queryTransaction(
+            @RequestBody TransactionQueryRequest request) {
+        return ResponseEntity.ok(rtellerService.queryTransaction(request));
+    }
+
+    @PostMapping("/query-product")
+    public ResponseEntity<RtellerResponse> queryProduct(
+            @RequestBody ProductRequest request) {
+        return ResponseEntity.ok(rtellerService.queryProduct(request));
+    }
+
+    @PostMapping("/authorize-transaction")
+    public ResponseEntity<RtellerResponse> authorizeTransaction(
+            @RequestBody AuthorizeTransactionRequest request) {
+        return ResponseEntity.ok(rtellerService.authorizeTransaction(request));
     }
 
     @PreAuthorize("hasAuthority('ROLE_CREATE_ACCOUNT')")
