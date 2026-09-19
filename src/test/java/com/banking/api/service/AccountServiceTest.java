@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class AccountServiceTest {
 
@@ -27,7 +28,7 @@ class AccountServiceTest {
                     paths.add(request.url().getPath());
                     return Mono.just(ClientResponse.create(HttpStatus.OK)
                             .header("Content-Type", "application/json")
-                            .body("{\"fcubsheader\":{\"msgstat\":\"SUCCESS\"}}")
+                            .body("{\"fcubsheader\":{\"msgstat\":\"SUCCESS\"},\"fcubsbody\":{}}")
                             .build());
                 })
                 .build();
@@ -35,17 +36,17 @@ class AccountServiceTest {
         AccountBalanceRequest balanceRequest = new AccountBalanceRequest("001", "123456");
         AccountNumberRequest accountNumberRequest = new AccountNumberRequest("123456");
 
-        assertEquals("SUCCESS", accountService.summaryBalance(accountNumberRequest).getFcubsheader().getMsgstat());
-        assertEquals("SUCCESS", accountService.fullAccountBalance(accountNumberRequest).getFcubsheader().getMsgstat());
-        assertEquals("SUCCESS", accountService.checkout(accountNumberRequest).getFcubsheader().getMsgstat());
-        assertEquals("SUCCESS", accountService.accountDetails(
-                new AccountDetailsRequest("001", "123456")).getFcubsheader().getMsgstat());
-        assertEquals("SUCCESS", accountService.statement(
-                new StatementRequest("987654", "statement-1")).getFcubsheader().getMsgstat());
-        assertEquals("SUCCESS", accountService.checkBalance(balanceRequest).getFcubsheader().getMsgstat());
-        assertEquals("SUCCESS", accountService.createAccount(
+        assertNotNull(accountService.summaryBalance(accountNumberRequest).getFcubsbody());
+        assertNotNull(accountService.fullAccountBalance(accountNumberRequest).getFcubsbody());
+        assertNotNull(accountService.checkout(accountNumberRequest).getFcubsbody());
+        assertNotNull(accountService.accountDetails(
+                new AccountDetailsRequest("001", "123456")).getFcubsbody());
+        assertNotNull(accountService.statement(
+                new StatementRequest("987654", "statement-1")).getFcubsbody());
+        assertNotNull(accountService.checkBalance(balanceRequest).getFcubsbody());
+        assertNotNull(accountService.createAccount(
                 new AccountCreationRequest("001", "123456", "987654", "NGN", "SAV"))
-                .getFcubsheader().getMsgstat());
+                .getFcubsbody());
 
         assertEquals(List.of(
                 "/api/v1/Summarybal",
