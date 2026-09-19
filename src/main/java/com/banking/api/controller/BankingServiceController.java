@@ -8,8 +8,14 @@ import com.banking.api.dto.AccountResponse;
 import com.banking.api.dto.AccountStatsResponse;
 import com.banking.api.dto.AccountStatementRequest;
 import com.banking.api.dto.AccountStatementResponse;
+import com.banking.api.dto.AmtBlockNoRequest;
+import com.banking.api.dto.AmountBlockRequest;
 import com.banking.api.dto.AuthorizeRequest;
 import com.banking.api.dto.CreateTellerRequest;
+import com.banking.api.dto.CreateCorporateRequest;
+import com.banking.api.dto.CustomerAccountDetailsRequest;
+import com.banking.api.dto.CustomerNumberRequest;
+import com.banking.api.dto.CustomerResponse;
 import com.banking.api.dto.DeResponse;
 import com.banking.api.dto.JnrMasterFullTemplate;
 import com.banking.api.dto.MultiDeJournalRequest;
@@ -56,12 +62,48 @@ public class BankingServiceController {
 
     @PreAuthorize("hasAuthority('ROLE_CREATE_CUSTOMER')")
     @PostMapping("/create-customer")
-    public ResponseEntity<Boolean> createCustomer(
+    public ResponseEntity<CustomerResponse> createCustomer(
             @RequestBody CustomerCreateRequest request) {
 
-        boolean response = customerService.createCustomer(request);
+        CustomerResponse response = customerService.createCustomer(request);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/query-customer")
+    public ResponseEntity<CustomerResponse> queryCustomer(
+            @RequestBody CustomerNumberRequest request) {
+        return ResponseEntity.ok(customerService.queryCustomer(request));
+    }
+
+    @PostMapping("/query-amount-block")
+    public ResponseEntity<CustomerResponse> queryAmountBlock(
+            @RequestBody AmtBlockNoRequest request) {
+        return ResponseEntity.ok(customerService.queryAmountBlock(request));
+    }
+
+    @PostMapping("/create-joint-customer")
+    public ResponseEntity<CustomerResponse> createJointCustomer(
+            @RequestBody CreateCorporateRequest request) {
+        return ResponseEntity.ok(customerService.createJointCustomer(request));
+    }
+
+    @PostMapping("/create-corporate-customer")
+    public ResponseEntity<CustomerResponse> createCorporateCustomer(
+            @RequestBody CreateCorporateRequest request) {
+        return ResponseEntity.ok(customerService.createCorporateCustomer(request));
+    }
+
+    @PostMapping("/amount-block")
+    public ResponseEntity<CustomerResponse> amountBlock(
+            @RequestBody AmountBlockRequest request) {
+        return ResponseEntity.ok(customerService.amountBlock(request));
+    }
+
+    @PostMapping("/customer-account-details")
+    public ResponseEntity<CustomerResponse> accountDetails(
+            @RequestBody CustomerAccountDetailsRequest request) {
+        return ResponseEntity.ok(customerService.accountDetails(request));
     }
 
     @PreAuthorize("hasAuthority('ROLE_PASS_ENTRY')")
