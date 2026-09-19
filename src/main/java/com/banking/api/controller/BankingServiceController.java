@@ -5,14 +5,19 @@ import com.banking.api.dto.AccountCreationRequest;
 import com.banking.api.dto.AccountDetailsRequest;
 import com.banking.api.dto.AccountNumberRequest;
 import com.banking.api.dto.AccountResponse;
+import com.banking.api.dto.AccountStatsResponse;
+import com.banking.api.dto.AuditTrailRequest;
 import com.banking.api.dto.CustomerCreateRequest;
+import com.banking.api.dto.CustomerQueryRequest;
 import com.banking.api.dto.CreateAccountResponse;
 import com.banking.api.dto.DebitCreditRequest;
 import com.banking.api.dto.FullAccountBalanceResponse;
 import com.banking.api.dto.StatementRequest;
 import com.banking.api.dto.StatementResponse;
 import com.banking.api.dto.SummaryBalanceResponse;
+import com.banking.api.dto.TransactionRequest;
 import com.banking.api.service.AccountService;
+import com.banking.api.service.AccountStatsService;
 import com.banking.api.service.CustomerService;
 import com.banking.api.service.RtellerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -36,6 +41,7 @@ public class BankingServiceController {
     private final CustomerService customerService;
     private final RtellerService rtellerService;
     private final AccountService accountService;
+    private final AccountStatsService accountStatsService;
 
     @PreAuthorize("hasAuthority('ROLE_CREATE_CUSTOMER')")
     @PostMapping("/create-customer")
@@ -105,5 +111,23 @@ public class BankingServiceController {
     public ResponseEntity<StatementResponse> statement(
             @RequestBody StatementRequest request) {
         return ResponseEntity.ok(accountService.statement(request));
+    }
+
+    @PostMapping("/customer-stats")
+    public ResponseEntity<AccountStatsResponse> queryCustomerStats(
+            @RequestBody CustomerQueryRequest request) {
+        return ResponseEntity.ok(accountStatsService.queryCustomerStats(request));
+    }
+
+    @PostMapping("/audit-trail")
+    public ResponseEntity<AccountStatsResponse> queryAuditTrail(
+            @RequestBody AuditTrailRequest request) {
+        return ResponseEntity.ok(accountStatsService.queryAuditTrail(request));
+    }
+
+    @PostMapping("/account-transactions")
+    public ResponseEntity<AccountStatsResponse> queryAccountTransaction(
+            @RequestBody TransactionRequest request) {
+        return ResponseEntity.ok(accountStatsService.queryAccountTransaction(request));
     }
 }

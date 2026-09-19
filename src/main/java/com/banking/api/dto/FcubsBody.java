@@ -10,4 +10,6 @@ public class FcubsBody {
     private List<ErrorResponse> fcubserrorresp;
     private List<WarningResponse> fcubswarningresp;
     private AccountBalanceResult accbalance;
+    private CustomerStatQuery cumulativeIO;
+    private CustomerStatFull cumulativeFull;
 }

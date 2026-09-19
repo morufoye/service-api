@@ -22,6 +22,9 @@ public class WebConfig {
     @Value("${account.service.url}")
     private String accountServiceUrl;
 
+    @Value("${account-stats.service.url}")
+    private String accountStatsServiceUrl;
+
     @Value("${rteller.service.url}")
     private String rTellerServiceUrl;
 
@@ -54,6 +57,21 @@ public class WebConfig {
     WebClient accountServiceWebClient(WebClient.Builder webClientBuilder) {
         return webClientBuilder
                 .baseUrl(accountServiceUrl)
+                .exchangeStrategies(ExchangeStrategies
+                        .builder()
+                        .codecs(codecs -> codecs
+                                .defaultCodecs()
+                                .maxInMemorySize(maxBufferSize * 1024))
+                        .build())
+                .defaultHeader("Accept", mediaType)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+    }
+
+    @Bean
+    WebClient accountStatsServiceWebClient(WebClient.Builder webClientBuilder) {
+        return webClientBuilder
+                .baseUrl(accountStatsServiceUrl)
                 .exchangeStrategies(ExchangeStrategies
                         .builder()
                         .codecs(codecs -> codecs
