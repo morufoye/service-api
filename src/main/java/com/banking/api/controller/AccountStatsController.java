@@ -23,16 +23,19 @@ public class AccountStatsController {
 
     private final AccountStatsService accountStatsService;
 
+    @PreAuthorize("hasAuthority('ROLE_VIEW_CUSTOMER_STATS')")
     @PostMapping("/customer-stats")
     public ResponseEntity<AccountStatsResponse> queryCustomerStats(@RequestBody CustomerQueryRequest request) {
         return ResponseEntity.ok(accountStatsService.queryCustomerStats(request));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_VIEW_AUDIT_TRAIL')")
     @PostMapping("/audit-trail")
     public ResponseEntity<AccountStatsResponse> queryAuditTrail(@RequestBody AuditTrailRequest request) {
         return ResponseEntity.ok(accountStatsService.queryAuditTrail(request));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_VIEW_ACCOUNT_TRANSACTIONS')")
     @PostMapping("/account-transactions")
     public ResponseEntity<AccountStatsResponse> queryAccountTransaction(@RequestBody TransactionRequest request) {
         return ResponseEntity.ok(accountStatsService.queryAccountTransaction(request));

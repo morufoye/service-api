@@ -21,6 +21,7 @@ public class ImageController {
 
     private final ImageService imageService;
 
+    @PreAuthorize("hasAuthority('ROLE_VIEW_SIGNATURE_IMAGE')")
     @PostMapping("/query-image")
     public ResponseEntity<ImageSignatureResponse> queryImage(@RequestBody ImageSignatureRequest request) {
         return ResponseEntity.ok(imageService.queryImage(request));

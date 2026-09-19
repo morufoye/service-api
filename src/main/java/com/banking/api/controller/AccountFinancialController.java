@@ -21,6 +21,7 @@ public class AccountFinancialController {
 
     private final AccountFinancialService accountFinancialService;
 
+    @PreAuthorize("hasAuthority('ROLE_VIEW_CUSTOMER_STATEMENT')")
     @PostMapping("/customer-statement")
     public ResponseEntity<AccountStatementResponse> queryCustomerStatement(
             @RequestBody AccountStatementRequest request) {

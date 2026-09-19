@@ -41,26 +41,31 @@ public class AccountController {
         return ResponseEntity.ok(accountService.checkBalance(request));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_VIEW_SUMMARY_BALANCE')")
     @PostMapping("/summary-balance")
     public ResponseEntity<SummaryBalanceResponse> summaryBalance(@RequestBody AccountNumberRequest request) {
         return ResponseEntity.ok(accountService.summaryBalance(request));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_VIEW_FULL_ACCOUNT_BALANCE')")
     @PostMapping("/full-account-balance")
     public ResponseEntity<FullAccountBalanceResponse> fullAccountBalance(@RequestBody AccountNumberRequest request) {
         return ResponseEntity.ok(accountService.fullAccountBalance(request));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_CHECKOUT_ACCOUNT')")
     @PostMapping("/checkout")
     public ResponseEntity<AccountResponse> checkout(@RequestBody AccountNumberRequest request) {
         return ResponseEntity.ok(accountService.checkout(request));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_VIEW_ACCOUNT_DETAILS')")
     @PostMapping("/account-details")
     public ResponseEntity<AccountResponse> accountDetails(@RequestBody AccountDetailsRequest request) {
         return ResponseEntity.ok(accountService.accountDetails(request));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_VIEW_ACCOUNT_STATEMENT')")
     @PostMapping("/statement")
     public ResponseEntity<StatementResponse> statement(@RequestBody StatementRequest request) {
         return ResponseEntity.ok(accountService.statement(request));

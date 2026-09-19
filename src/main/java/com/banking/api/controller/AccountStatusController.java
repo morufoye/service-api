@@ -21,6 +21,7 @@ public class AccountStatusController {
 
     private final AccountStatusService accountStatusService;
 
+    @PreAuthorize("hasAuthority('ROLE_CHANGE_ACCOUNT_STATUS')")
     @PostMapping("/account-status-change")
     public ResponseEntity<StatusChangeResponse> changeAccountStatus(@RequestBody StatChangeRequest request) {
         return ResponseEntity.ok(accountStatusService.changeAccountStatus(request));

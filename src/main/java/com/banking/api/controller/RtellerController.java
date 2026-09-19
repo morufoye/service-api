@@ -31,21 +31,25 @@ public class RtellerController {
         return ResponseEntity.ok(rtellerService.passAccountEntry(request));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_REVERSE_TRANSACTION')")
     @PostMapping("/reverse-transaction")
     public ResponseEntity<RtellerResponse> reverseTransaction(@RequestBody ReverseTransactionRequest request) {
         return ResponseEntity.ok(rtellerService.reverseTransaction(request));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_QUERY_TRANSACTION')")
     @PostMapping("/query-transaction")
     public ResponseEntity<RtellerResponse> queryTransaction(@RequestBody TransactionQueryRequest request) {
         return ResponseEntity.ok(rtellerService.queryTransaction(request));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_QUERY_PRODUCT')")
     @PostMapping("/query-product")
     public ResponseEntity<RtellerResponse> queryProduct(@RequestBody ProductRequest request) {
         return ResponseEntity.ok(rtellerService.queryProduct(request));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_AUTHORIZE_TRANSACTION')")
     @PostMapping("/authorize-transaction")
     public ResponseEntity<RtellerResponse> authorizeTransaction(
             @RequestBody AuthorizeTransactionRequest request) {

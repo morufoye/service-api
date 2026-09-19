@@ -32,31 +32,37 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.createCustomer(request));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_QUERY_CUSTOMER')")
     @PostMapping("/query-customer")
     public ResponseEntity<CustomerResponse> queryCustomer(@RequestBody CustomerNumberRequest request) {
         return ResponseEntity.ok(customerService.queryCustomer(request));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_QUERY_AMOUNT_BLOCK')")
     @PostMapping("/query-amount-block")
     public ResponseEntity<CustomerResponse> queryAmountBlock(@RequestBody AmtBlockNoRequest request) {
         return ResponseEntity.ok(customerService.queryAmountBlock(request));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_CREATE_JOINT_CUSTOMER')")
     @PostMapping("/create-joint-customer")
     public ResponseEntity<CustomerResponse> createJointCustomer(@RequestBody CreateCorporateRequest request) {
         return ResponseEntity.ok(customerService.createJointCustomer(request));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_CREATE_CORPORATE_CUSTOMER')")
     @PostMapping("/create-corporate-customer")
     public ResponseEntity<CustomerResponse> createCorporateCustomer(@RequestBody CreateCorporateRequest request) {
         return ResponseEntity.ok(customerService.createCorporateCustomer(request));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_CREATE_AMOUNT_BLOCK')")
     @PostMapping("/amount-block")
     public ResponseEntity<CustomerResponse> amountBlock(@RequestBody AmountBlockRequest request) {
         return ResponseEntity.ok(customerService.amountBlock(request));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_VIEW_CUSTOMER_ACCOUNT_DETAILS')")
     @PostMapping("/customer-account-details")
     public ResponseEntity<CustomerResponse> accountDetails(@RequestBody CustomerAccountDetailsRequest request) {
         return ResponseEntity.ok(customerService.accountDetails(request));

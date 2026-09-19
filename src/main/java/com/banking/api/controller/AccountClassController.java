@@ -23,16 +23,19 @@ public class AccountClassController {
 
     private final AccountClassService accountClassService;
 
+    @PreAuthorize("hasAuthority('ROLE_VIEW_ACCOUNT_CLASS_DATA')")
     @GetMapping("/locations")
     public ResponseEntity<List<Location>> getAllLocations() {
         return ResponseEntity.ok(accountClassService.getAllLocations());
     }
 
+    @PreAuthorize("hasAuthority('ROLE_VIEW_ACCOUNT_CLASS_DATA')")
     @GetMapping("/customer-categories")
     public ResponseEntity<List<CustomerCategory>> getAllCustomerCategories() {
         return ResponseEntity.ok(accountClassService.getAllCustomerCategories());
     }
 
+    @PreAuthorize("hasAuthority('ROLE_VIEW_ACCOUNT_CLASS_DATA')")
     @GetMapping("/classes")
     public ResponseEntity<List<AccountClass>> getAllAccountClasses() {
         return ResponseEntity.ok(accountClassService.getAllAccountClasses());
