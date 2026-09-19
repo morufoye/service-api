@@ -12,4 +12,5 @@ public class FcubsBody {
     private AccountBalanceResult accbalance;
     private CustomerStatQuery cumulativeIO;
     private CustomerStatFull cumulativeFull;
+    private AdhocStatementResult custAccStmtAdhocRequest;
 }

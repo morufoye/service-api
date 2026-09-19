@@ -6,6 +6,8 @@ import com.banking.api.dto.AccountDetailsRequest;
 import com.banking.api.dto.AccountNumberRequest;
 import com.banking.api.dto.AccountResponse;
 import com.banking.api.dto.AccountStatsResponse;
+import com.banking.api.dto.AccountStatementRequest;
+import com.banking.api.dto.AccountStatementResponse;
 import com.banking.api.dto.AuditTrailRequest;
 import com.banking.api.dto.CustomerCreateRequest;
 import com.banking.api.dto.CustomerQueryRequest;
@@ -18,6 +20,7 @@ import com.banking.api.dto.SummaryBalanceResponse;
 import com.banking.api.dto.TransactionRequest;
 import com.banking.api.service.AccountService;
 import com.banking.api.service.AccountStatsService;
+import com.banking.api.service.AccountFinancialService;
 import com.banking.api.service.CustomerService;
 import com.banking.api.service.RtellerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -42,6 +45,7 @@ public class BankingServiceController {
     private final RtellerService rtellerService;
     private final AccountService accountService;
     private final AccountStatsService accountStatsService;
+    private final AccountFinancialService accountFinancialService;
 
     @PreAuthorize("hasAuthority('ROLE_CREATE_CUSTOMER')")
     @PostMapping("/create-customer")
@@ -129,5 +133,11 @@ public class BankingServiceController {
     public ResponseEntity<AccountStatsResponse> queryAccountTransaction(
             @RequestBody TransactionRequest request) {
         return ResponseEntity.ok(accountStatsService.queryAccountTransaction(request));
+    }
+
+    @PostMapping("/customer-statement")
+    public ResponseEntity<AccountStatementResponse> queryCustomerStatement(
+            @RequestBody AccountStatementRequest request) {
+        return ResponseEntity.ok(accountFinancialService.queryCustomerStatement(request));
     }
 }

@@ -50,6 +50,10 @@ account-stats:
   service:
     url: ${ACCOUNT_STATS_SERVICE_URL:http://localhost:9083/}
 
+account-fin:
+  service:
+    url: ${ACCOUNT_FIN_SERVICE_URL:http://localhost:9085/}
+
 springdoc:
   swagger-ui:
     oauth:
