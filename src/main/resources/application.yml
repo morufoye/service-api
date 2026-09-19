@@ -66,6 +66,10 @@ image:
   service:
     url: ${IMAGE_SERVICE_URL:http://localhost:9088/}
 
+account-class:
+  service:
+    url: ${ACCOUNT_CLASS_SERVICE_URL:http://localhost:9089/}
+
 springdoc:
   swagger-ui:
     oauth:

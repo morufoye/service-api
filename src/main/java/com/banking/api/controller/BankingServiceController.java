@@ -38,6 +38,9 @@ import com.banking.api.dto.RtellerResponse;
 import com.banking.api.dto.TransactionQueryRequest;
 import com.banking.api.dto.ImageSignatureRequest;
 import com.banking.api.dto.ImageSignatureResponse;
+import com.banking.api.dto.AccountClass;
+import com.banking.api.dto.CustomerCategory;
+import com.banking.api.dto.Location;
 import com.banking.api.service.AccountService;
 import com.banking.api.service.AccountStatsService;
 import com.banking.api.service.AccountFinancialService;
@@ -46,15 +49,19 @@ import com.banking.api.service.AccountStatusService;
 import com.banking.api.service.CustomerService;
 import com.banking.api.service.RtellerService;
 import com.banking.api.service.ImageService;
+import com.banking.api.service.AccountClassService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/service")
@@ -72,6 +79,7 @@ public class BankingServiceController {
     private final DeService deService;
     private final AccountStatusService accountStatusService;
     private final ImageService imageService;
+    private final AccountClassService accountClassService;
 
     @PreAuthorize("hasAuthority('ROLE_CREATE_CUSTOMER')")
     @PostMapping("/create-customer")
@@ -157,6 +165,21 @@ public class BankingServiceController {
     public ResponseEntity<ImageSignatureResponse> queryImage(
             @RequestBody ImageSignatureRequest request) {
         return ResponseEntity.ok(imageService.queryImage(request));
+    }
+
+    @GetMapping("/account-class/locations")
+    public ResponseEntity<List<Location>> getAllLocations() {
+        return ResponseEntity.ok(accountClassService.getAllLocations());
+    }
+
+    @GetMapping("/account-class/customer-categories")
+    public ResponseEntity<List<CustomerCategory>> getAllCustomerCategories() {
+        return ResponseEntity.ok(accountClassService.getAllCustomerCategories());
+    }
+
+    @GetMapping("/account-class/classes")
+    public ResponseEntity<List<AccountClass>> getAllAccountClasses() {
+        return ResponseEntity.ok(accountClassService.getAllAccountClasses());
     }
 
     @PreAuthorize("hasAuthority('ROLE_CREATE_ACCOUNT')")

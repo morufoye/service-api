@@ -37,6 +37,9 @@ public class WebConfig {
     @Value("${image.service.url}")
     private String imageServiceUrl;
 
+    @Value("${account-class.service.url}")
+    private String accountClassServiceUrl;
+
     @Value("${rteller.service.url}")
     private String rTellerServiceUrl;
 
@@ -144,6 +147,21 @@ public class WebConfig {
     WebClient imageServiceWebClient(WebClient.Builder webClientBuilder) {
         return webClientBuilder
                 .baseUrl(imageServiceUrl)
+                .exchangeStrategies(ExchangeStrategies
+                        .builder()
+                        .codecs(codecs -> codecs
+                                .defaultCodecs()
+                                .maxInMemorySize(maxBufferSize * 1024))
+                        .build())
+                .defaultHeader("Accept", mediaType)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+    }
+
+    @Bean
+    WebClient accountClassServiceWebClient(WebClient.Builder webClientBuilder) {
+        return webClientBuilder
+                .baseUrl(accountClassServiceUrl)
                 .exchangeStrategies(ExchangeStrategies
                         .builder()
                         .codecs(codecs -> codecs
