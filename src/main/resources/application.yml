@@ -54,6 +54,10 @@ account-fin:
   service:
     url: ${ACCOUNT_FIN_SERVICE_URL:http://localhost:9085/}
 
+de:
+  service:
+    url: ${DE_SERVICE_URL:http://localhost:9086/}
+
 springdoc:
   swagger-ui:
     oauth:

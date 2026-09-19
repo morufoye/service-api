@@ -13,4 +13,5 @@ public class FcubsBody {
     private CustomerStatQuery cumulativeIO;
     private CustomerStatFull cumulativeFull;
     private AdhocStatementResult custAccStmtAdhocRequest;
+    private MultiJrnlBookFull detbsJrnlTxnMasterFull;
 }

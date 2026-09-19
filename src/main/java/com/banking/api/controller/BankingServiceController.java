@@ -8,6 +8,11 @@ import com.banking.api.dto.AccountResponse;
 import com.banking.api.dto.AccountStatsResponse;
 import com.banking.api.dto.AccountStatementRequest;
 import com.banking.api.dto.AccountStatementResponse;
+import com.banking.api.dto.AuthorizeRequest;
+import com.banking.api.dto.CreateTellerRequest;
+import com.banking.api.dto.DeResponse;
+import com.banking.api.dto.JnrMasterFullTemplate;
+import com.banking.api.dto.MultiDeJournalRequest;
 import com.banking.api.dto.AuditTrailRequest;
 import com.banking.api.dto.CustomerCreateRequest;
 import com.banking.api.dto.CustomerQueryRequest;
@@ -21,6 +26,7 @@ import com.banking.api.dto.TransactionRequest;
 import com.banking.api.service.AccountService;
 import com.banking.api.service.AccountStatsService;
 import com.banking.api.service.AccountFinancialService;
+import com.banking.api.service.DeService;
 import com.banking.api.service.CustomerService;
 import com.banking.api.service.RtellerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -46,6 +52,7 @@ public class BankingServiceController {
     private final AccountService accountService;
     private final AccountStatsService accountStatsService;
     private final AccountFinancialService accountFinancialService;
+    private final DeService deService;
 
     @PreAuthorize("hasAuthority('ROLE_CREATE_CUSTOMER')")
     @PostMapping("/create-customer")
@@ -139,5 +146,35 @@ public class BankingServiceController {
     public ResponseEntity<AccountStatementResponse> queryCustomerStatement(
             @RequestBody AccountStatementRequest request) {
         return ResponseEntity.ok(accountFinancialService.queryCustomerStatement(request));
+    }
+
+    @PostMapping("/multi-de-journal")
+    public ResponseEntity<DeResponse> multiDeJournal(
+            @RequestBody MultiDeJournalRequest request) {
+        return ResponseEntity.ok(deService.multiDeJournal(request));
+    }
+
+    @PostMapping("/multi-journal-v2")
+    public ResponseEntity<DeResponse> multiJournal2(
+            @RequestBody MultiDeJournalRequest request) {
+        return ResponseEntity.ok(deService.multiJournal2(request));
+    }
+
+    @PostMapping("/multi-template")
+    public ResponseEntity<DeResponse> multiTemplate(
+            @RequestBody JnrMasterFullTemplate request) {
+        return ResponseEntity.ok(deService.multiTemplate(request));
+    }
+
+    @PostMapping("/create-teller")
+    public ResponseEntity<DeResponse> createTeller(
+            @RequestBody CreateTellerRequest request) {
+        return ResponseEntity.ok(deService.createTeller(request));
+    }
+
+    @PostMapping("/authorize")
+    public ResponseEntity<DeResponse> authorize(
+            @RequestBody AuthorizeRequest request) {
+        return ResponseEntity.ok(deService.authorize(request));
     }
 }
