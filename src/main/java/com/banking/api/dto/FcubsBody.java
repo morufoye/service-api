@@ -15,4 +15,5 @@ public class FcubsBody {
     private AdhocStatementResult custAccStmtAdhocRequest;
     private MultiJrnlBookFull detbsJrnlTxnMasterFull;
     private CustomerFull customerFull;
+    private AccountStatusMaster accStatMasterFull;
 }

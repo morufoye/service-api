@@ -58,6 +58,10 @@ de:
   service:
     url: ${DE_SERVICE_URL:http://localhost:9086/}
 
+bst:
+  service:
+    url: ${BST_SERVICE_URL:http://localhost:9087/}
+
 springdoc:
   swagger-ui:
     oauth:

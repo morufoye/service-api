@@ -27,12 +27,15 @@ import com.banking.api.dto.DebitCreditRequest;
 import com.banking.api.dto.FullAccountBalanceResponse;
 import com.banking.api.dto.StatementRequest;
 import com.banking.api.dto.StatementResponse;
+import com.banking.api.dto.StatChangeRequest;
+import com.banking.api.dto.StatusChangeResponse;
 import com.banking.api.dto.SummaryBalanceResponse;
 import com.banking.api.dto.TransactionRequest;
 import com.banking.api.service.AccountService;
 import com.banking.api.service.AccountStatsService;
 import com.banking.api.service.AccountFinancialService;
 import com.banking.api.service.DeService;
+import com.banking.api.service.AccountStatusService;
 import com.banking.api.service.CustomerService;
 import com.banking.api.service.RtellerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -59,6 +62,7 @@ public class BankingServiceController {
     private final AccountStatsService accountStatsService;
     private final AccountFinancialService accountFinancialService;
     private final DeService deService;
+    private final AccountStatusService accountStatusService;
 
     @PreAuthorize("hasAuthority('ROLE_CREATE_CUSTOMER')")
     @PostMapping("/create-customer")
@@ -218,5 +222,11 @@ public class BankingServiceController {
     public ResponseEntity<DeResponse> authorize(
             @RequestBody AuthorizeRequest request) {
         return ResponseEntity.ok(deService.authorize(request));
+    }
+
+    @PostMapping("/account-status-change")
+    public ResponseEntity<StatusChangeResponse> changeAccountStatus(
+            @RequestBody StatChangeRequest request) {
+        return ResponseEntity.ok(accountStatusService.changeAccountStatus(request));
     }
 }

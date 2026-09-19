@@ -31,6 +31,9 @@ public class WebConfig {
     @Value("${de.service.url}")
     private String deServiceUrl;
 
+    @Value("${bst.service.url}")
+    private String bstServiceUrl;
+
     @Value("${rteller.service.url}")
     private String rTellerServiceUrl;
 
@@ -108,6 +111,21 @@ public class WebConfig {
     WebClient deServiceWebClient(WebClient.Builder webClientBuilder) {
         return webClientBuilder
                 .baseUrl(deServiceUrl)
+                .exchangeStrategies(ExchangeStrategies
+                        .builder()
+                        .codecs(codecs -> codecs
+                                .defaultCodecs()
+                                .maxInMemorySize(maxBufferSize * 1024))
+                        .build())
+                .defaultHeader("Accept", mediaType)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+    }
+
+    @Bean
+    WebClient bstServiceWebClient(WebClient.Builder webClientBuilder) {
+        return webClientBuilder
+                .baseUrl(bstServiceUrl)
                 .exchangeStrategies(ExchangeStrategies
                         .builder()
                         .codecs(codecs -> codecs
