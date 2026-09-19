@@ -18,4 +18,6 @@ public class FcubsBody {
     private CustomerFull customerFull;
     private AccountStatusMaster accStatMasterFull;
     private JsonNode transactionDetails;
+    private ImageSignature svvwsSifsigmasterIO;
+    private ImageSignature svvwsSifsigmasterFull;
 }

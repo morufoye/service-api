@@ -36,6 +36,8 @@ import com.banking.api.dto.ProductRequest;
 import com.banking.api.dto.ReverseTransactionRequest;
 import com.banking.api.dto.RtellerResponse;
 import com.banking.api.dto.TransactionQueryRequest;
+import com.banking.api.dto.ImageSignatureRequest;
+import com.banking.api.dto.ImageSignatureResponse;
 import com.banking.api.service.AccountService;
 import com.banking.api.service.AccountStatsService;
 import com.banking.api.service.AccountFinancialService;
@@ -43,6 +45,7 @@ import com.banking.api.service.DeService;
 import com.banking.api.service.AccountStatusService;
 import com.banking.api.service.CustomerService;
 import com.banking.api.service.RtellerService;
+import com.banking.api.service.ImageService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,6 +71,7 @@ public class BankingServiceController {
     private final AccountFinancialService accountFinancialService;
     private final DeService deService;
     private final AccountStatusService accountStatusService;
+    private final ImageService imageService;
 
     @PreAuthorize("hasAuthority('ROLE_CREATE_CUSTOMER')")
     @PostMapping("/create-customer")
@@ -147,6 +151,12 @@ public class BankingServiceController {
     public ResponseEntity<RtellerResponse> authorizeTransaction(
             @RequestBody AuthorizeTransactionRequest request) {
         return ResponseEntity.ok(rtellerService.authorizeTransaction(request));
+    }
+
+    @PostMapping("/query-image")
+    public ResponseEntity<ImageSignatureResponse> queryImage(
+            @RequestBody ImageSignatureRequest request) {
+        return ResponseEntity.ok(imageService.queryImage(request));
     }
 
     @PreAuthorize("hasAuthority('ROLE_CREATE_ACCOUNT')")

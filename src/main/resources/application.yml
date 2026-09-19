@@ -62,6 +62,10 @@ bst:
   service:
     url: ${BST_SERVICE_URL:http://localhost:9087/}
 
+image:
+  service:
+    url: ${IMAGE_SERVICE_URL:http://localhost:9088/}
+
 springdoc:
   swagger-ui:
     oauth:
