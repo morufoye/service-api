@@ -7,5 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StatusChangeResponse {
 
+    private FcubsResponseHeader fcubsheader;
     private FcubsBody fcubsbody;
 }

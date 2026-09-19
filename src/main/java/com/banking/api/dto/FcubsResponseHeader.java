@@ -5,8 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class RtellerResponse {
+public class FcubsResponseHeader {
 
-    private FcubsResponseHeader fcubsheader;
-    private FcubsBody fcubsbody;
+    private String msgstat;
 }

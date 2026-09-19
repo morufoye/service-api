@@ -7,5 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AccountStatementResponse {
 
+    private FcubsResponseHeader fcubsheader;
     private FcubsBody fcubsbody;
 }

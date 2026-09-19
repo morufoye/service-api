@@ -7,5 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DeResponse {
 
+    private FcubsResponseHeader fcubsheader;
     private FcubsBody fcubsbody;
 }

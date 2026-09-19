@@ -36,7 +36,9 @@ class AccountServiceTest {
         AccountBalanceRequest balanceRequest = new AccountBalanceRequest("001", "123456");
         AccountNumberRequest accountNumberRequest = new AccountNumberRequest("123456");
 
-        assertNotNull(accountService.summaryBalance(accountNumberRequest).getFcubsbody());
+        var summaryBalance = accountService.summaryBalance(accountNumberRequest);
+        assertNotNull(summaryBalance.getFcubsbody());
+        assertEquals("SUCCESS", summaryBalance.getFcubsheader().getMsgstat());
         assertNotNull(accountService.fullAccountBalance(accountNumberRequest).getFcubsbody());
         assertNotNull(accountService.checkout(accountNumberRequest).getFcubsbody());
         assertNotNull(accountService.accountDetails(
