@@ -96,7 +96,7 @@ class CustomerServiceTest {
                             .build());
                 })
                 .build();
-        CustomerService service = new CustomerService(webClient);
+        CustomerService service = new CustomerService(webClient, new ObjectMapper().findAndRegisterModules());
 
         assertNotNull(service.createCustomer(new CustomerCreateRequest()).getFcubsbody());
         assertNotNull(service.queryCustomer(new CustomerNumberRequest()).getFcubsbody());

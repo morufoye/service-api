@@ -7,6 +7,8 @@ import com.banking.api.dto.CreateCorporateRequest;
 import com.banking.api.dto.CustomerAccountDetailsRequest;
 import com.banking.api.dto.CustomerResponse;
 import com.banking.api.dto.CustomerNumberRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -18,14 +20,19 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class CustomerService {
 
     private final WebClient webClient;
+    private final ObjectMapper objectMapper;
 
-    public CustomerService(@Qualifier("customerWebClient") WebClient webClient) {
+    public CustomerService(
+            @Qualifier("customerWebClient") WebClient webClient,
+            ObjectMapper objectMapper
+    ) {
         this.webClient = webClient;
+        this.objectMapper = objectMapper;
     }
 
     public CustomerResponse createCustomer(CustomerCreateRequest request) {
         log.info("Creating customer with fullname: {}", request.getFullname());
-        return post("/api/v1/createcust", request, "creating customer");
+        return postAndLogRawResponse("/api/v1/createcust", request, "creating customer");
     }
 
     public CustomerResponse queryCustomer(CustomerNumberRequest request) {
@@ -58,6 +65,25 @@ public class CustomerService {
                 .bodyValue(request)
                 .retrieve()
                 .bodyToMono(CustomerResponse.class)
+                .doOnError(ex -> log.error("{} failed: {}", operation, ex.getMessage()))
+                .block();
+    }
+
+    private CustomerResponse postAndLogRawResponse(String uri, Object request, String operation) {
+        return webClient.post()
+                .uri(uri)
+                .bodyValue(request)
+                .retrieve()
+                .bodyToMono(String.class)
+                .doOnNext(rawResponse -> log.info("Raw response for {}: {}", operation, rawResponse))
+                .map(rawResponse -> {
+                    try {
+                        return objectMapper.readValue(rawResponse, CustomerResponse.class);
+                    } catch (JsonProcessingException exception) {
+                        throw new IllegalStateException(
+                                "Unable to deserialize raw response for " + operation, exception);
+                    }
+                })
                 .doOnError(ex -> log.error("{} failed: {}", operation, ex.getMessage()))
                 .block();
     }
