@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -97,7 +98,7 @@ class CustomerServiceTest {
                             .build());
                 })
                 .build();
-        CustomerService service = new CustomerService(webClient, new ObjectMapper().findAndRegisterModules());
+        CustomerService service = new CustomerService(webClient);
 
         assertNotNull(service.createCustomer(new CustomerCreateRequest()).getFcubsbody());
         assertNotNull(service.queryCustomer(new CustomerNumberRequest()).getFcubsbody());
@@ -142,15 +143,12 @@ class CustomerServiceTest {
                         .build()))
                 .build();
 
-        CustomerResponse response = new CustomerService(
-                webClient,
-                new ObjectMapper().findAndRegisterModules()
-        ).createCustomer(new CustomerCreateRequest());
+        CustomerResponse response = new CustomerService(webClient)
+                .createCustomer(new CustomerCreateRequest());
 
         assertEquals("SUCCESS", response.getFcubsheader().getMsgstat());
-        assertEquals("054853", response.getFcubsbody().getCustomerFull()
-                .get("custno").asText());
-        assertEquals("Waidi", response.getFcubsbody().getCustomerFull()
-                .get("custpersonal").get("fstname").asText());
+        assertEquals("054853", response.getFcubsbody().getCustomerFull().get("custno"));
+        Map<?, ?> personal = (Map<?, ?>) response.getFcubsbody().getCustomerFull().get("custpersonal");
+        assertEquals("Waidi", personal.get("fstname"));
     }
 }

@@ -1,9 +1,9 @@
 package com.banking.api.dto;
 
 import lombok.Data;
-import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class FcubsBody {
@@ -15,9 +15,9 @@ public class FcubsBody {
     private CustomerStatFull cumulativeFull;
     private AdhocStatementResult custAccStmtAdhocRequest;
     private MultiJrnlBookFull detbsJrnlTxnMasterFull;
-    private JsonNode customerFull;
+    private Map<String, Object> customerFull;
     private AccountStatusMaster accStatMasterFull;
-    private JsonNode transactionDetails;
+    private Map<String, Object> transactionDetails;
     private ImageSignature svvwsSifsigmasterIO;
     private ImageSignature svvwsSifsigmasterFull;
 }
