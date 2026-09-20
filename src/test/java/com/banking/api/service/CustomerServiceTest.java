@@ -3,6 +3,7 @@ package com.banking.api.service;
 import com.banking.api.dto.AmtBlockNoRequest;
 import com.banking.api.dto.CustomerCreateRequest;
 import com.banking.api.dto.CustomerNumberRequest;
+import com.banking.api.dto.CustomerResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -106,5 +107,47 @@ class CustomerServiceTest {
                 "/api/v1/createcust",
                 "/api/v1/QueryCustomer",
                 "/api/v1/QueryAmtBlk"), paths);
+    }
+
+    @Test
+    void mapsCustomerResponseWithFullFcubsHeaderAndPreservesMessageStatus() throws Exception {
+        String rawResponse = """
+                {
+                  "fcubsheader": {
+                    "source": "FCAT",
+                    "ubscomp": "FCUBS",
+                    "msgid": "6126263007436918",
+                    "operation": "CreateCustomer",
+                    "msgstat": "SUCCESS",
+                    "destination": "FCAT"
+                  },
+                  "fcubsbody": {
+                    "customerFull": {
+                      "customer": {
+                        "custno": "054853",
+                        "fullname": "Waidi Adekunle Lami"
+                      }
+                    },
+                    "fcubserrorresp": [],
+                    "fcubswarningresp": []
+                  }
+                }
+                """;
+        WebClient webClient = WebClient.builder()
+                .baseUrl("http://customer-service")
+                .exchangeFunction(request -> Mono.just(ClientResponse.create(HttpStatus.OK)
+                        .header("Content-Type", "application/json")
+                        .body(rawResponse)
+                        .build()))
+                .build();
+
+        CustomerResponse response = new CustomerService(
+                webClient,
+                new ObjectMapper().findAndRegisterModules()
+        ).createCustomer(new CustomerCreateRequest());
+
+        assertEquals("SUCCESS", response.getFcubsheader().getMsgstat());
+        assertEquals("054853", response.getFcubsbody().getCustomerFull()
+                .getCustomer().get("custno").asText());
     }
 }
