@@ -42,6 +42,48 @@ class CustomerServiceTest {
     }
 
     @Test
+    void acceptsCompleteCreateCustomerPayload() throws Exception {
+        String json = """
+                {
+                  "addrln1": "string",
+                  "country": "SL",
+                  "ccateg": "INDV",
+                  "fullname": "Nill Jalo Sese Lami",
+                  "media": "MAIL",
+                  "loc": "FTN",
+                  "sname": "Jalo sese",
+                  "nlty": "SL",
+                  "uidname": "IDCARD",
+                  "uidval": "09473837",
+                  "createacc": "N",
+                  "custpersonal": {
+                    "fstname": "Nill",
+                    "midname": "SESE",
+                    "lstname": "JALO",
+                    "dob": "1983-10-05",
+                    "gendr": "M",
+                    "nationid": "362728",
+                    "telephno": "094827272",
+                    "lang": "ENG",
+                    "pptno": "1R7R7WW",
+                    "pptissdt": "2026-09-19",
+                    "pptexpdt": "2030-09-19"
+                  }
+                }
+                """;
+
+        CustomerCreateRequest request = new ObjectMapper()
+                .findAndRegisterModules()
+                .readValue(json, CustomerCreateRequest.class);
+
+        assertEquals("Nill Jalo Sese Lami", request.getFullname());
+        assertEquals("IDCARD", request.getUidname());
+        assertEquals(1983, request.getCustpersonal().getDob().getYear());
+        assertEquals(10, request.getCustpersonal().getDob().getMonth());
+        assertEquals(5, request.getCustpersonal().getDob().getDay());
+    }
+
+    @Test
     void delegatesCustomerOperationsAndReturnsTypedBody() {
         List<String> paths = new ArrayList<>();
         WebClient webClient = WebClient.builder()
