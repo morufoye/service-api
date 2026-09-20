@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 @Data
 @NoArgsConstructor
@@ -13,7 +13,7 @@ public class CustomerMisBalanceTransferLog {
     private String brn;
     private String deperiodcode;
     private String finyr;
-    private OffsetDateTime txndt;
+    private XMLGregorianCalendar txndt;
     private String glcode;
     private String miscls;
     private String oldmiscd;

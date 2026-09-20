@@ -3,7 +3,7 @@ package com.banking.api.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.OffsetDateTime;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 @Data
 @NoArgsConstructor
@@ -12,12 +12,12 @@ public class CustomerPersonal {
     private String fstname;
     private String midname;
     private String lstname;
-    private OffsetDateTime dob;
+    private XMLGregorianCalendar dob;
     private String gendr;
     private String nationid;
     private String telephno;
     private String lang;
     private String pptno;
-    private OffsetDateTime pptissdt;
-    private OffsetDateTime pptexpdt;
+    private XMLGregorianCalendar pptissdt;
+    private XMLGregorianCalendar pptexpdt;
 }

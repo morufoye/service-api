@@ -3,14 +3,14 @@ package com.banking.api.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.OffsetDateTime;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 @Data
 @NoArgsConstructor
 public class CustomerMisChangeLog {
 
     private String miscls;
-    private OffsetDateTime txndt;
+    private XMLGregorianCalendar txndt;
     private String oldmiscd;
     private String nwmiscd;
 }
