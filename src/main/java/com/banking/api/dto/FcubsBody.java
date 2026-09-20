@@ -15,7 +15,7 @@ public class FcubsBody {
     private CustomerStatFull cumulativeFull;
     private AdhocStatementResult custAccStmtAdhocRequest;
     private MultiJrnlBookFull detbsJrnlTxnMasterFull;
-    private CustomerFull customerFull;
+    private JsonNode customerFull;
     private AccountStatusMaster accStatMasterFull;
     private JsonNode transactionDetails;
     private ImageSignature svvwsSifsigmasterIO;

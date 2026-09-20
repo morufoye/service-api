@@ -123,9 +123,10 @@ class CustomerServiceTest {
                   },
                   "fcubsbody": {
                     "customerFull": {
-                      "customer": {
-                        "custno": "054853",
-                        "fullname": "Waidi Adekunle Lami"
+                      "custno": "054853",
+                      "fullname": "Waidi Adekunle Lami",
+                      "custpersonal": {
+                        "fstname": "Waidi"
                       }
                     },
                     "fcubserrorresp": [],
@@ -148,6 +149,8 @@ class CustomerServiceTest {
 
         assertEquals("SUCCESS", response.getFcubsheader().getMsgstat());
         assertEquals("054853", response.getFcubsbody().getCustomerFull()
-                .getCustomer().get("custno").asText());
+                .get("custno").asText());
+        assertEquals("Waidi", response.getFcubsbody().getCustomerFull()
+                .get("custpersonal").get("fstname").asText());
     }
 }
